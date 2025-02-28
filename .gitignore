@@ -1,0 +1,38 @@
+# Binaries
+**/bin/
+bin-int/
+Intermediates/
+
+# Toon files
+**.log
+
+# Visual Studio files and folders
+.vs/
+ExportedObj/
+.consulo/
+**.csproj
+**.sln
+**.suo
+**.tmp
+**.user
+**.userprefs
+**.pidb
+**.booproj
+**.svd
+**.pdb
+**.mdb
+**.opendb
+**.VC.db
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Builds
+**.apk
+**.aab
+**.app
+
+# Directories
+ToonCore/extern/VulkanSDK
+ToonEditor/assets/cache
+scripts/__pycache__
