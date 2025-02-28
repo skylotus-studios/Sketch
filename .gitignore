@@ -3,8 +3,11 @@
 bin-int/
 Intermediates/
 
-# Toon files
+# Sketch files
 **.log
+
+#third party
+**/third_party/
 
 # Visual Studio files and folders
 .vs/
