@@ -27,12 +27,17 @@ ExportedObj/
 **.vcxproj.filters
 **.vcxproj.user
 
+# Clion files and folders
+.idea/
+cmake-build-debug/
+cmake-build-release/
+CMakeLists.txt.user
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+
 # Builds
 **.apk
 **.aab
 **.app
-
-# Directories
-ToonCore/extern/VulkanSDK
-ToonEditor/assets/cache
-scripts/__pycache__
