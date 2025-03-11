@@ -8,9 +8,13 @@ include_directories(.)
 set(GLFW_DIR ${CMAKE_SOURCE_DIR}/third_party/glfw-3.4)
 # Add GLFW
 add_subdirectory(${GLFW_DIR} glfw_build)
+# Set GLAD directory
+set(GLAD_DIR ${CMAKE_SOURCE_DIR}/third_party/glad)
 # Include GLFW headers
 include_directories(${GLFW_DIR}/include)
+# Include GLAD headers
+include_directories(${GLAD_DIR}/include)
 # Define the Executable (Make sure you specify your source file(s))
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/glad.c)
 # Link GLFW with your executable
-target_link_libraries(${PROJECT_NAME} glfw)
+target_link_libraries(${PROJECT_NAME} glfw opengl32)
