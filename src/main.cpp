@@ -2,11 +2,38 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <src/rendering/shaders/shader.cpp>
+#include <src/rendering/vao.cpp>
+#include <src/rendering/vbo.cpp>
+#include <src/rendering/ebo.cpp>
 #define null nullptr
 
 // settings
-const unsigned int SCREEN_WIDTH = 3840;
-const unsigned int SCREEN_HEIGHT = 2160;
+constexpr GLuint SCREEN_WIDTH = 3840;
+constexpr GLuint SCREEN_HEIGHT = 2160;
+
+constexpr float vertices[] = {
+        -0.25f, -0.25f, 0.0f, //position
+         0.0f,  0.0f, 0.0f, //color
+         //0.0f,  0.0f, 0.0f, //normal
+         //0.0f,  0.0f,       //texture
+         0.25f, -0.25f, 0.0f, //position
+         1.0f,  0.0f, 1.0f, //color
+         //0.0f,  0.0f, 0.0f, //normal
+         //1.0f,  0.0f,       //texture
+         0.25f,  0.25f, 0.0f, //position
+         0.0f,  1.0f, 0.0f, //color
+         //0.0f,  0.0f, 0.0f, //normal
+         //0.0f,  1.0f,       //texture
+        -0.25f,  0.25f, 0.0f, //position
+         1.0f,  1.0f, 1.0f, //color
+         //0.0f,  0.0f, 0.0f, //normal
+         //1.0f,  1.0f        //texture
+};
+GLuint indices[] = {
+        0, 1, 2,
+        0, 2, 3
+};
 
 void error_callback(int error, const char* description)
 {
@@ -38,6 +65,10 @@ static void setWindowHints(){
 #endif
 }
 
+void render() {
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
 
 int main(){
     glfwSetErrorCallback(error_callback);
@@ -66,16 +97,27 @@ int main(){
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Load GLAD
-    if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)){
+    if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    const shader shaderProgram("../src/rendering/shaders/triangle.vert", "../src/rendering/shaders/triangle.frag");
+
+    vbo VBO(vertices, sizeof(vertices));
+    ebo EBO(indices, sizeof(indices));
+    const auto VAO = vao(VBO, EBO);
 
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window)) {
         // Render here
         glClearColor(0.3f, 0.4f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        // Draw the quad
+        shaderProgram.use();
+        VAO.bind();
+        render();
+        vao::unbind();
         // Swap front and back buffers
         glfwSwapBuffers(window);
         // Poll for and process events
