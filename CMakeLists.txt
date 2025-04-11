@@ -18,3 +18,6 @@ include_directories(${GLAD_DIR}/include)
 add_executable(${PROJECT_NAME} src/main.cpp src/glad.c)
 # Link GLFW with your executable
 target_link_libraries(${PROJECT_NAME} glfw opengl32)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(Sketch PRIVATE SKETCH_DEBUG)
+endif()
