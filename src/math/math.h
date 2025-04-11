@@ -301,7 +301,3 @@ struct Mat4 {
                   << m[3][0] << " " << m[3][1] << " " << m[3][2] << " " << m[3][3] << "\n";
     }
 };
-
-inline Mat4 operator*(const Mat4& lhs, const Mat4& rhs) {
-    return lhs * rhs;
-}
