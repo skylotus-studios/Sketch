@@ -6,6 +6,7 @@
 #include <src/rendering/vao.cpp>
 #include <src/rendering/vbo.cpp>
 #include <src/rendering/ebo.cpp>
+#include <src/math/math.h>
 #define null nullptr
 
 // settings
