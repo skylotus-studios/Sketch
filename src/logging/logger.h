@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <format>
 #if defined(_WIN32)
     #include <windows.h>
 #endif
@@ -18,6 +19,16 @@ enum class LogLevel {
 
 class logger {
 private:
+    static void enableAnsiColors() {
+#if defined(_WIN32)
+        const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD dwMode = 0;
+        GetConsoleMode(hOut, &dwMode);
+        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, dwMode);
+#endif
+    }
+
     static std::string tag(const LogLevel level) {
         switch (level) {
             case LogLevel::TEST: return " [TEST] ";
@@ -64,6 +75,7 @@ private:
     }
 public:
     logger() {
+        enableAnsiColors();
         log("  ---[[WELCOME TO SKETCH ENGINE!]]---  ");
     }
     ~logger() {
@@ -71,22 +83,28 @@ public:
     }
 
 #ifdef SKETCH_DEBUG
-    void debug(const std::string& message) {
-        print(LogLevel::TEST, message);
+    template <typename... Args>
+    void debug(std::format_string<Args...> fmt, Args&&... args) {
+        print(LogLevel::TEST, std::format(fmt, std::forward<Args>(args)...));
     }
 #else
-    void debug(const std::string&) {} // stripped in release
+    template <typename... Args>
+    void debug(std::format_string<Args...> fmt, Args&&... args) {} // stripped in release
 #endif
-    void info(const std::string& message) {
-        print(LogLevel::INFO, message);
+    template <typename... Args>
+    void info(std::format_string<Args...> fmt, Args&&... args) {
+        print(LogLevel::INFO, std::format(fmt, std::forward<Args>(args)...));
     }
-    void warn(const std::string& message) {
-        print(LogLevel::WARN, message);
+    template <typename... Args>
+    void warn(std::format_string<Args...> fmt, Args&&... args) {
+        print(LogLevel::WARN, std::format(fmt, std::forward<Args>(args)...));
     }
-    void error(const std::string& message) {
-        print(LogLevel::FAIL, message);
+    template <typename... Args>
+    void error(std::format_string<Args...> fmt, Args&&... args) {
+        print(LogLevel::FAIL, std::format(fmt, std::forward<Args>(args)...));
     }
-    void log(const std::string& message) {
-        print(LogLevel::SPECIAL, message);
+    template <typename... Args>
+    void log(std::format_string<Args...> fmt, Args&&... args) {
+        print(LogLevel::SPECIAL, std::format(fmt, std::forward<Args>(args)...));
     }
 };
