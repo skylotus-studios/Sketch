@@ -66,7 +66,12 @@ private:
         setColor(level);
         if (level == LogLevel::FAIL) {
             std::cerr << timestamp() << tag(level) << message << std::endl;
-        } else if (level != LogLevel::SPECIAL) {
+            resetColor();
+            std::cout << "Engine Shutting Down. Press Enter to Exit...\n";
+            std::cin.get();
+            exit(1);
+        }
+        if (level != LogLevel::SPECIAL) {
             std::cout << timestamp() << tag(level) << message << std::endl;
         } else {
             std::cout << message << std::endl;
@@ -77,9 +82,6 @@ public:
     logger() {
         enableAnsiColors();
         log("  ---[[WELCOME TO SKETCH ENGINE!]]---  ");
-    }
-    ~logger() {
-        log("Shutting Down...");
     }
 
 #ifdef SKETCH_DEBUG
