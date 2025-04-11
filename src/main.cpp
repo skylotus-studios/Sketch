@@ -7,12 +7,12 @@
 #include <src/rendering/vbo.cpp>
 #include <src/rendering/ebo.cpp>
 #include <src/math/math.h>
+#include <src/logging/logger.h>
 #define null nullptr
 
 // settings
 constexpr GLuint SCREEN_WIDTH = 3840;
 constexpr GLuint SCREEN_HEIGHT = 2160;
-
 constexpr float vertices[] = {
         -0.25f, -0.25f, 0.0f, //position
          0.0f,  0.0f, 0.0f, //color
@@ -76,8 +76,7 @@ int main(){
 
     // Initialize the library
     if (!glfwInit()) {
-        std::cout << "Failed to initialize GLFW" << std::endl;
-        return -1;
+        LOG.error("Failed to initialize GLFW");
     }
 
     setWindowHints();
@@ -85,9 +84,8 @@ int main(){
     // Create a windowed mode window and its OpenGL context
     GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sketch Engine", null, null);
     if (window == null) {
-        std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        LOG.error("Failed to create GLFW window");
     }
 
     // Make the window's context current
@@ -99,8 +97,7 @@ int main(){
 
     // Load GLAD
     if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))){
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
+        LOG.error("Failed to initialize GLAD");
     }
 
     const shader shaderProgram("../src/rendering/shaders/triangle.vert", "../src/rendering/shaders/triangle.frag");
