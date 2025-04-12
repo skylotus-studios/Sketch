@@ -285,17 +285,16 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 perspective(const float fovDeg, const float aspect, float near, float far) {
+    static Mat4 perspective(const float fovDeg, const float aspect, const float nearPlane, const float farPlane) {
         const float fovRad = fovDeg * (PI / 180.0f);
         const float f = 1.0f / std::tan(fovRad / 2.0f);
-        float rangeInv = 1.0f / (near - far);
+        const float zRange = nearPlane - farPlane;
         Mat4 result;
         result.m[0][0] = f / aspect;
         result.m[1][1] = f;
-        result.m[2][2] = (near + far) * rangeInv;
+        result.m[2][2] = (nearPlane + farPlane) / zRange;
         result.m[2][3] = -1.0f;
-        result.m[3][2] = 2.0f * near * far * rangeInv;
-        result.m[3][3] = 0.0f;
+        result.m[3][2] = 2.0f * nearPlane * farPlane / zRange;
         return result;
     }
 
