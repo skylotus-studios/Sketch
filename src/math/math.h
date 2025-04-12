@@ -13,14 +13,14 @@ struct Vec2 {
     Vec2(const float x, const float y) : x(x), y(y) {}
     Vec2(const int x, const int y) : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
 
-    Vec2 operator+(const Vec2& other) const { return { x + other.x, y + other.y }; }
-    Vec2 operator-(const Vec2& other) const { return { x - other.x, y - other.y }; }
     Vec2 operator*(const Vec2& other) const { return { x * other.x, y * other.y }; }
     Vec2 operator/(const Vec2& other) const { return { x / other.x, y / other.y }; }
-    Vec2& operator+=(const Vec2& other) { x += other.x; y += other.y; return *this; }
-    Vec2& operator-=(const Vec2& other) { x -= other.x; y -= other.y; return *this; }
+    Vec2 operator+(const Vec2& other) const { return { x + other.x, y + other.y }; }
+    Vec2 operator-(const Vec2& other) const { return { x - other.x, y - other.y }; }
     Vec2& operator*=(const Vec2& other) { x *= other.x; y *= other.y; return *this; }
     Vec2& operator/=(const Vec2& other) { x /= other.x; y /= other.y; return *this; }
+    Vec2& operator+=(const Vec2& other) { x += other.x; y += other.y; return *this; }
+    Vec2& operator-=(const Vec2& other) { x -= other.x; y -= other.y; return *this; }
     Vec2 operator*(const float scalar) const { return { x * scalar, y * scalar }; }
     Vec2 operator/(const float scalar) const { return { x / scalar, y / scalar }; }
 
@@ -76,14 +76,14 @@ struct Vec3 {
     Vec3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
     Vec3(const int x, const int y, const int z) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)) {}
 
-    Vec3 operator+(const Vec3& other) const { return { x + other.x, y + other.y, z + other.z }; }
-    Vec3 operator-(const Vec3& other) const { return { x - other.x, y - other.y, z - other.z }; }
     Vec3 operator*(const Vec3& other) const { return { x * other.x, y * other.y, z * other.z }; }
     Vec3 operator/(const Vec3& other) const { return { x / other.x, y / other.y, z / other.z }; }
-    Vec3& operator+=(const Vec3& other) { x += other.x; y += other.y; z += other.z; return *this; }
-    Vec3& operator-=(const Vec3& other) { x -= other.x; y -= other.y; z -= other.z; return *this; }
+    Vec3 operator+(const Vec3& other) const { return { x + other.x, y + other.y, z + other.z }; }
+    Vec3 operator-(const Vec3& other) const { return { x - other.x, y - other.y, z - other.z }; }
     Vec3& operator*=(const Vec3& other) { x *= other.x; y *= other.y; z *= other.z; return *this; }
     Vec3& operator/=(const Vec3& other) { x /= other.x; y /= other.y; z /= other.z; return *this; }
+    Vec3& operator+=(const Vec3& other) { x += other.x; y += other.y; z += other.z; return *this; }
+    Vec3& operator-=(const Vec3& other) { x -= other.x; y -= other.y; z -= other.z; return *this; }
     Vec3 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar }; }
     Vec3 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar }; }
 
@@ -140,14 +140,14 @@ struct Vec4 {
     Vec4(const int x, const int y, const int z, const int w) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)), w(static_cast<float>(w)) {}
     Vec4(const Vec3& vec, const float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
 
-    Vec4 operator+(const Vec4& other) const { return { x + other.x, y + other.y, z + other.z, w + other.w }; }
-    Vec4 operator-(const Vec4& other) const { return { x - other.x, y - other.y, z - other.z, w - other.w }; }
     Vec4 operator*(const Vec4& other) const { return { x * other.x, y * other.y, z * other.z, w * other.w }; }
     Vec4 operator/(const Vec4& other) const { return { x / other.x, y / other.y, z / other.z, w / other.w }; }
-    Vec4& operator+=(const Vec4& other) { x += other.x; y += other.y; z += other.z; w += other.w; return *this; }
-    Vec4& operator-=(const Vec4& other) { x -= other.x; y -= other.y; z -= other.z; w -= other.w; return *this; }
+    Vec4 operator+(const Vec4& other) const { return { x + other.x, y + other.y, z + other.z, w + other.w }; }
+    Vec4 operator-(const Vec4& other) const { return { x - other.x, y - other.y, z - other.z, w - other.w }; }
     Vec4& operator*=(const Vec4& other) { x *= other.x; y *= other.y; z *= other.z; w *= other.w; return *this; }
     Vec4& operator/=(const Vec4& other) { x /= other.x; y /= other.y; z /= other.z; w /= other.w; return *this; }
+    Vec4& operator+=(const Vec4& other) { x += other.x; y += other.y; z += other.z; w += other.w; return *this; }
+    Vec4& operator-=(const Vec4& other) { x -= other.x; y -= other.y; z -= other.z; w -= other.w; return *this; }
     Vec4 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar, w * scalar }; }
     Vec4 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar, w / scalar }; }
 
@@ -282,6 +282,33 @@ struct Mat4 {
         result.m[3][2] = 0;
         result.m[3][3] = 1;
 
+        return result;
+    }
+
+    static Mat4 perspective(const float fovDeg, const float aspect, float near, float far) {
+        const float fovRad = fovDeg * (PI / 180.0f);
+        const float f = 1.0f / std::tan(fovRad / 2.0f);
+        float rangeInv = 1.0f / (near - far);
+        Mat4 result;
+        result.m[0][0] = f / aspect;
+        result.m[1][1] = f;
+        result.m[2][2] = (near + far) * rangeInv;
+        result.m[2][3] = -1.0f;
+        result.m[3][2] = 2.0f * near * far * rangeInv;
+        result.m[3][3] = 0.0f;
+        return result;
+    }
+
+    static Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up) {
+        const Vec3 f = (center - eye).normalize();
+        const Vec3 s = f.cross(up).normalize();
+        const Vec3 u = s.cross(f).normalize();
+
+        Mat4 result;
+        result.m[0][0] = s.x; result.m[0][1] = u.x; result.m[0][2] = -f.x;
+        result.m[1][0] = s.y; result.m[1][1] = u.y; result.m[1][2] = -f.y;
+        result.m[2][0] = s.z; result.m[2][1] = u.z; result.m[2][2] = -f.z;
+        result.m[3][0] = -s.dot(eye); result.m[3][1] = -u.dot(eye); result.m[3][2] = f.dot(eye);
         return result;
     }
 
