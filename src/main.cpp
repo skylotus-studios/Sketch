@@ -13,6 +13,7 @@
 // settings
 constexpr GLuint SCREEN_WIDTH = 3840;
 constexpr GLuint SCREEN_HEIGHT = 2160;
+constexpr GLfloat ASPECT_RATIO = 16.0/9.0f;
 constexpr float vertices[] = {
         -0.25f, -0.25f, 0.0f, //position
          0.0f,  0.0f, 0.0f, //color
@@ -102,6 +103,11 @@ int main(){
 
     const shader shaderProgram("../src/rendering/shaders/triangle.vert", "../src/rendering/shaders/triangle.frag");
 
+    Mat4 model = Mat4::translation({0.0f, 0.0f, 0.0f});
+    Mat4 view = Mat4::lookAt({0, 0, 5}, {0, 0, 0}, {0, 1, 0});
+    Mat4 projection = Mat4::perspective(60.0f, ASPECT_RATIO, 0.1f, 100.0f);
+    Mat4 mvp = projection*view*model;
+
     vbo VBO(vertices, sizeof(vertices));
     ebo EBO(indices, sizeof(indices));
     const auto VAO = vao(VBO, EBO);
@@ -113,6 +119,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
         // Draw the quad
         shaderProgram.use();
+        shaderProgram.setMatrix4("uMVP", &mvp.m[0][0]);
         VAO.bind();
         render();
         vao::unbind();
