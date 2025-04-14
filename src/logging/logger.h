@@ -81,6 +81,8 @@ private:
 public:
     logger() {
         enableAnsiColors();
+    }
+    void init() {
         log("  ---[[WELCOME TO SKETCH ENGINE!]]---  ");
     }
 
