@@ -4,11 +4,11 @@ constexpr float vertices[] = {
     -0.25f, -0.25f, 0.0f, //position
      0.0f,  0.0f, 0.0f, //color
      0.0f,  0.0f, 1.0f, //normal
-     0.0f,  0.0f,       //texture
+     1.0f,  0.0f,       //texture
      0.25f, -0.25f, 0.0f, //position
      1.0f,  0.0f, 1.0f, //color
      0.0f,  0.0f, 1.0f, //normal
-     1.0f,  0.0f,       //texture
+     0.0f,  0.0f,       //texture
      0.25f,  0.25f, 0.0f, //position
      0.0f,  1.0f, 0.0f, //color
      0.0f,  0.0f, 1.0f, //normal
