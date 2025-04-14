@@ -1,8 +1,9 @@
 #pragma once
 #include <glad/glad.h>
-#include <iostream>
-#include <fstream>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include "logging/logger.h"
 
 class shader {
 public:
@@ -15,7 +16,8 @@ public:
 private:
     static std::string readFile(const std::string& filePath);
     static void checkCompileErrors(GLuint shader, const std::string& type);
-    GLuint id;
-    GLuint vertex;
-    GLuint fragment;
+    static inline logger _log;
+    GLuint _vertex;
+    GLuint _fragment;
+    GLuint _id;
 };

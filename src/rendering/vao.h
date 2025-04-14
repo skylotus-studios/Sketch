@@ -11,7 +11,7 @@ public:
     void bind() const;
     static void unbind() ;
 private:
-    vbo& VBO;
-    ebo& EBO;
-    GLuint id{};
+    vbo& _vbo;
+    ebo& _ebo;
+    GLuint _id{};
 };

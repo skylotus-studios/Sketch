@@ -1,17 +1,17 @@
 #include "vao.h"
 
-vao::vao(vbo& VBO, ebo& EBO) : VBO(VBO), EBO(EBO) {
-    glGenVertexArrays(1, &id);
+vao::vao(vbo& VBO, ebo& EBO) : _vbo(VBO), _ebo(EBO) {
+    glGenVertexArrays(1, &_id);
     bind();
     VBO.bind();
     EBO.bind();
 }
 vao::~vao() {
-    glDeleteVertexArrays(1, &id);
+    glDeleteVertexArrays(1, &_id);
 }
 
 void vao::bind() const {
-    glBindVertexArray(id);
+    glBindVertexArray(_id);
 }
 
 void vao::unbind() {
