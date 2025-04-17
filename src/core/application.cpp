@@ -81,7 +81,7 @@ void application::init() {
     _texture->loadFromSTB("../src/assets/test.png");
 
     _model = Mat4::translation({0.0f, 0.0f, 0.0f });
-    _view = Mat4::lookAt({0, 0, -5}, {0, 0, 0}, {0, 1, 0});
+    _view = Mat4::lookAt({0, 0, -5}, {0, 0, 0});
     _projection = Mat4::perspective(60.0f, ASPECT_RATIO, 0.1f, 100.0f);
 
     _vbo = std::make_unique<vbo>(vertices, sizeof(vertices));

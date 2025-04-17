@@ -87,6 +87,17 @@ struct Vec3 {
     Vec3 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar }; }
     Vec3 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar }; }
 
+    static Vec3 up() { return { 0, 1, 0 }; }
+    static Vec3 down() { return { 0, -1, 0 }; }
+    static Vec3 left() { return { -1, 0, 0 }; }
+    static Vec3 right() { return { 1, 0, 0 }; }
+    static Vec3 forward() { return { 0, 0, -1 }; }
+    static Vec3 back() { return { 0, 0, 1 }; }
+
+    [[nodiscard]] Vec3 min() const { return { std::fmin(x, y), std::fmin(y, z), std::fmin(z, x) }; }
+
+    [[nodiscard]] Vec3 max() const { return { std::fmax(x, y), std::fmax(y, z), std::fmax(z, x) }; }
+
     [[nodiscard]] Vec3 min(const Vec3& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y), std::fmin(z, other.z) }; }
 
     [[nodiscard]] Vec3 max(const Vec3& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y), std::fmax(z, other.z) }; }
@@ -298,16 +309,16 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up) {
-        const Vec3 f = (center - eye).normalize();
-        const Vec3 s = f.cross(up).normalize();
-        const Vec3 u = s.cross(f).normalize();
+    static Mat4 lookAt(const Vec3& targetPos, const Vec3& cameraPos) {
+        const Vec3 f = (cameraPos - targetPos).normalize(); // forward vector - view direction of the camera
+        const Vec3 s = f.cross(Vec3::up()).normalize(); // right vector - perpendicular to the forward vector and world up vector
+        const Vec3 u = s.cross(f).normalize(); // camera up vector - perpendicular to the forward and right vectors
 
         Mat4 result;
         result.m[0][0] = s.x; result.m[0][1] = u.x; result.m[0][2] = -f.x;
         result.m[1][0] = s.y; result.m[1][1] = u.y; result.m[1][2] = -f.y;
         result.m[2][0] = s.z; result.m[2][1] = u.z; result.m[2][2] = -f.z;
-        result.m[3][0] = -s.dot(eye); result.m[3][1] = -u.dot(eye); result.m[3][2] = f.dot(eye);
+        result.m[3][0] = -s.dot(targetPos); result.m[3][1] = -u.dot(targetPos); result.m[3][2] = f.dot(targetPos);
         return result;
     }
 
