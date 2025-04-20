@@ -32,9 +32,19 @@ void application::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 }
 
 void application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
+    input::onKeyEvent(key, action);
+}
+
+void application::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    input::onMouseButtonEvent(button, action);
+}
+
+void application::mouseMoveCallback(GLFWwindow* window, double x, double y) {
+    input::onMouseMoveEvent(x, y);
+}
+
+void application::mouseWheelCallback(GLFWwindow* window, double xOffset, double yOffset) {
+    input::onMouseWheelEvent(yOffset);
 }
 
 void application::setWindowHints() {
@@ -51,6 +61,7 @@ void application::setWindowHints() {
 }
 
 void application::init() {
+    _currentTime = glfwGetTime();
     _log.init();
     glfwSetErrorCallback(errorCallback);
     // Initialize the library
@@ -67,8 +78,14 @@ void application::init() {
     // Make the window's context current
     glfwMakeContextCurrent(_window);
 
+    //Set VSync
+    glfwSwapInterval(1);
+
     // Set callbacks for the window
     glfwSetKeyCallback(_window, keyCallback);
+    glfwSetMouseButtonCallback(_window, mouseButtonCallback);
+    glfwSetCursorPosCallback(_window, mouseMoveCallback);
+    glfwSetScrollCallback(_window, mouseWheelCallback);
     glfwSetFramebufferSizeCallback(_window, framebufferSizeCallback);
 
     // Load GLAD
@@ -91,12 +108,20 @@ void application::init() {
     _renderer = new renderer(*_shaderProgram, *_vao, *_texture);
 }
 
-void application::run() const {
+void application::run() {
     while (!glfwWindowShouldClose(_window)) {
+        _currentTime = glfwGetTime();
+        const timestep deltaTime = _currentTime - _lastFrameTime;
+        _lastFrameTime = _currentTime;
+
         // Render loop
         _renderer->render(_model, _view, _projection);
         glfwSwapBuffers(_window);
         glfwPollEvents();
+        if (input::getKey(key.escape)) {
+            glfwSetWindowShouldClose(_window, GLFW_TRUE);
+        }
+        input::update(deltaTime);
     }
 }
 
