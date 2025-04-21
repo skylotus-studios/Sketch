@@ -14,6 +14,7 @@
 #include "input/input.h"
 #include "input/keycodes.h"
 #include "input/mousecodes.h"
+#include "core/camera.h"
 
 class application {
 public:
@@ -32,6 +33,7 @@ private:
 
     GLFWwindow* _window = nullptr;
     renderer* _renderer = nullptr;
+    camera* _camera = nullptr;
     static inline logger _log;
 
     static constexpr GLuint SCREEN_WIDTH = 3840;
