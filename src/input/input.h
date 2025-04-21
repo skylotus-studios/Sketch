@@ -67,7 +67,7 @@ public:
         return state.wasDown && !state.isDown; // mouse button was down last frame but is not down now
     }
 
-    static std::pair<float, float> getMousePosition() {
+    static vec2 getMousePosition() {
         return { _mouseX, _mouseY };
     }
 
