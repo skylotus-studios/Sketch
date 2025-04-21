@@ -309,7 +309,7 @@ struct mat4 {
         return result;
     }
 
-    static mat4 lookAt(const vec3& targetPos, const vec3& cameraPos) {
+    static mat4 lookAt(const vec3& cameraPos, const vec3& targetPos) {
         const vec3 f = (cameraPos - targetPos).normalize(); // forward vector - view direction of the camera
         const vec3 s = f.cross(vec3::up()).normalize(); // right vector - perpendicular to the forward vector and world up vector
         const vec3 u = s.cross(f).normalize(); // camera up vector - perpendicular to the forward and right vectors
