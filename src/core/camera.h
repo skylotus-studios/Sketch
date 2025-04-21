@@ -8,7 +8,7 @@
 
 class camera {
 public:
-    camera(vec3 position = {0,0,3}, float yaw = -90.0f, float pitch = 0.0f);
+    camera(vec3 position = {0,0,5}, float yaw = -90.0f, float pitch = 0.0f);
     ~camera(){};
     void update(timestep deltaTime);
     vec3 getPos() const { return _position; }
@@ -27,7 +27,9 @@ private:
     float _yaw;
     float _pitch;
     float _movementSpeed = 5.0f;
-    float _sensitivity = 45.0f;
+    float _sensitivity = 1.0f;
+    float _mouseX = 0.0f;
+    float _mouseY = 0.0f;
     static constexpr double PI = 3.14159265358979323846f;
     static inline logger _log;
 };

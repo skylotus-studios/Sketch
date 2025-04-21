@@ -309,8 +309,19 @@ struct mat4 {
         return result;
     }
 
+    static mat4 orthographic(const float left, const float right, const float bottom, const float top, const float nearPlane, const float farPlane) {
+        mat4 result;
+        result.m[0][0] = 2.0f / (right - left);
+        result.m[1][1] = 2.0f / (top - bottom);
+        result.m[2][2] = -2.0f / (farPlane - nearPlane);
+        result.m[3][0] = -(right + left) / (right - left);
+        result.m[3][1] = -(top + bottom) / (top - bottom);
+        result.m[3][2] = -(farPlane + nearPlane) / (farPlane - nearPlane);
+        return result;
+    }
+
     static mat4 lookAt(const vec3& cameraPos, const vec3& targetPos) {
-        const vec3 f = (cameraPos - targetPos).normalize(); // forward vector - view direction of the camera
+        const vec3 f = (targetPos - cameraPos).normalize(); // forward vector - view direction of the camera
         const vec3 s = f.cross(vec3::up()).normalize(); // right vector - perpendicular to the forward vector and world up vector
         const vec3 u = s.cross(f).normalize(); // camera up vector - perpendicular to the forward and right vectors
 
@@ -318,7 +329,7 @@ struct mat4 {
         result.m[0][0] = s.x; result.m[0][1] = u.x; result.m[0][2] = -f.x;
         result.m[1][0] = s.y; result.m[1][1] = u.y; result.m[1][2] = -f.y;
         result.m[2][0] = s.z; result.m[2][1] = u.z; result.m[2][2] = -f.z;
-        result.m[3][0] = -s.dot(targetPos); result.m[3][1] = -u.dot(targetPos); result.m[3][2] = f.dot(targetPos);
+        result.m[3][0] = -s.dot(cameraPos); result.m[3][1] = -u.dot(cameraPos); result.m[3][2] = f.dot(cameraPos);
         return result;
     }
 
