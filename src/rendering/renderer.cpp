@@ -2,7 +2,7 @@
 
 renderer::renderer(shader& shaderProgram, vao& VAO, texture& tex) : _shaderProgram(&shaderProgram), _vao(&VAO), _texture(&tex) {}
 
-void renderer::render(const Mat4& model, const Mat4& view, const Mat4& projection) {
+void renderer::render(const mat4& model, const mat4& view, const mat4& projection) {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.1f, 0.3f, 0.4f, 0.9f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -8,7 +8,7 @@ class renderer {
 public:
     renderer(shader& shaderProgram, vao& VAO, texture& tex);
     ~renderer() = default;
-    void render(const Mat4& model, const Mat4& view, const Mat4& projection);
+    void render(const mat4& model, const mat4& view, const mat4& projection);
 private:
     shader* _shaderProgram;
     vao* _vao;

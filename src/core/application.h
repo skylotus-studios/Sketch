@@ -40,9 +40,9 @@ private:
     float _currentTime = 0;
     float _lastFrameTime = 0;
 
-    Mat4 _model;
-    Mat4 _view;
-    Mat4 _projection;
+    mat4 _model;
+    mat4 _view;
+    mat4 _projection;
 
     std::unique_ptr<vao> _vao;
     std::unique_ptr<vbo> _vbo;

@@ -97,9 +97,9 @@ void application::init() {
     _texture = std::make_unique<texture>();
     _texture->loadFromSTB("../src/assets/test.png");
 
-    _model = Mat4::translation({0.0f, 0.0f, 0.0f });
-    _view = Mat4::lookAt({0, 0, -5}, {0, 0, 0});
-    _projection = Mat4::perspective(60.0f, ASPECT_RATIO, 0.1f, 100.0f);
+    _model = mat4::translation({0.0f, 0.0f, 0.0f });
+    _view = mat4::lookAt({0, 0, -5}, {0, 0, 0});
+    _projection = mat4::perspective(60.0f, ASPECT_RATIO, 0.1f, 100.0f);
 
     _vbo = std::make_unique<vbo>(vertices, sizeof(vertices));
     _ebo = std::make_unique<ebo>(indices, sizeof(indices));

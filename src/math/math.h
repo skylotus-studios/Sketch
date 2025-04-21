@@ -4,54 +4,54 @@
 
 constexpr double PI = 3.14159265358979323846f;
 
-struct Vec2 {
+struct vec2 {
     float x, y;
 
-    Vec2() : x(0), y(0) {}
-    explicit Vec2(const float value) : x(value), y(value) {}
-    explicit Vec2(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)) {}
-    Vec2(const float x, const float y) : x(x), y(y) {}
-    Vec2(const int x, const int y) : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
+    vec2() : x(0), y(0) {}
+    explicit vec2(const float value) : x(value), y(value) {}
+    explicit vec2(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)) {}
+    vec2(const float x, const float y) : x(x), y(y) {}
+    vec2(const int x, const int y) : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
 
-    Vec2 operator*(const Vec2& other) const { return { x * other.x, y * other.y }; }
-    Vec2 operator/(const Vec2& other) const { return { x / other.x, y / other.y }; }
-    Vec2 operator+(const Vec2& other) const { return { x + other.x, y + other.y }; }
-    Vec2 operator-(const Vec2& other) const { return { x - other.x, y - other.y }; }
-    Vec2& operator*=(const Vec2& other) { x *= other.x; y *= other.y; return *this; }
-    Vec2& operator/=(const Vec2& other) { x /= other.x; y /= other.y; return *this; }
-    Vec2& operator+=(const Vec2& other) { x += other.x; y += other.y; return *this; }
-    Vec2& operator-=(const Vec2& other) { x -= other.x; y -= other.y; return *this; }
-    Vec2 operator*(const float scalar) const { return { x * scalar, y * scalar }; }
-    Vec2 operator/(const float scalar) const { return { x / scalar, y / scalar }; }
+    vec2 operator*(const vec2& other) const { return { x * other.x, y * other.y }; }
+    vec2 operator/(const vec2& other) const { return { x / other.x, y / other.y }; }
+    vec2 operator+(const vec2& other) const { return { x + other.x, y + other.y }; }
+    vec2 operator-(const vec2& other) const { return { x - other.x, y - other.y }; }
+    vec2& operator*=(const vec2& other) { x *= other.x; y *= other.y; return *this; }
+    vec2& operator/=(const vec2& other) { x /= other.x; y /= other.y; return *this; }
+    vec2& operator+=(const vec2& other) { x += other.x; y += other.y; return *this; }
+    vec2& operator-=(const vec2& other) { x -= other.x; y -= other.y; return *this; }
+    vec2 operator*(const float scalar) const { return { x * scalar, y * scalar }; }
+    vec2 operator/(const float scalar) const { return { x / scalar, y / scalar }; }
 
-    [[nodiscard]] Vec2 min(const Vec2& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y) }; }
+    [[nodiscard]] vec2 min(const vec2& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y) }; }
 
-    [[nodiscard]] Vec2 max(const Vec2& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y) }; }
+    [[nodiscard]] vec2 max(const vec2& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y) }; }
 
-    [[nodiscard]] Vec2 clamp(const Vec2& minVal, const Vec2& maxVal) const {
+    [[nodiscard]] vec2 clamp(const vec2& minVal, const vec2& maxVal) const {
         return { fmax(minVal.x, fmin(x, maxVal.x)), fmax(minVal.y, fmin(y, maxVal.y)) };
     }
 
-    [[nodiscard]] float dot(const Vec2& other) const { return x * other.x + y * other.y; }
+    [[nodiscard]] float dot(const vec2& other) const { return x * other.x + y * other.y; }
 
-    [[nodiscard]] Vec2 cross(const Vec2& other) const { return { y * other.x - x * other.y, x * other.y - y * other.x }; }
+    [[nodiscard]] vec2 cross(const vec2& other) const { return { y * other.x - x * other.y, x * other.y - y * other.x }; }
 
     [[nodiscard]] float length() const { return std::sqrt(x * x + y * y); }
 
-    [[nodiscard]] float distance(const Vec2& other) const { return (*this-other).length(); }
+    [[nodiscard]] float distance(const vec2& other) const { return (*this-other).length(); }
 
-    [[nodiscard]] Vec2 normalize() const {
+    [[nodiscard]] vec2 normalize() const {
         const float len = length();
-        return len != 0 ? (*this) / len : Vec2();
+        return len != 0 ? (*this) / len : vec2();
     }
 
-    [[nodiscard]] float angle(const Vec2& other) const {
+    [[nodiscard]] float angle(const vec2& other) const {
         const float dotProduct = dot(other);
         const float lengths = length() * other.length();
         return lengths > 0 ? std::acos(dotProduct / lengths) * (180.0f / PI) : 0;
     }
 
-    [[nodiscard]] Vec2 rotate(const float angle) const {
+    [[nodiscard]] vec2 rotate(const float angle) const {
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -65,67 +65,67 @@ struct Vec2 {
     }
 };
 
-inline Vec2 operator*(const float scalar, const Vec2& vec) { return vec * scalar; }
+inline vec2 operator*(const float scalar, const vec2& vec) { return vec * scalar; }
 
-struct Vec3 {
+struct vec3 {
     float x, y, z;
 
-    Vec3() : x(0), y(0), z(0) {}
-    explicit Vec3(const float value) : x(value), y(value), z(value) {}
-    explicit Vec3(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)), z(static_cast<float>(value)) {}
-    Vec3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
-    Vec3(const int x, const int y, const int z) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)) {}
+    vec3() : x(0), y(0), z(0) {}
+    explicit vec3(const float value) : x(value), y(value), z(value) {}
+    explicit vec3(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)), z(static_cast<float>(value)) {}
+    vec3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
+    vec3(const int x, const int y, const int z) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)) {}
 
-    Vec3 operator*(const Vec3& other) const { return { x * other.x, y * other.y, z * other.z }; }
-    Vec3 operator/(const Vec3& other) const { return { x / other.x, y / other.y, z / other.z }; }
-    Vec3 operator+(const Vec3& other) const { return { x + other.x, y + other.y, z + other.z }; }
-    Vec3 operator-(const Vec3& other) const { return { x - other.x, y - other.y, z - other.z }; }
-    Vec3& operator*=(const Vec3& other) { x *= other.x; y *= other.y; z *= other.z; return *this; }
-    Vec3& operator/=(const Vec3& other) { x /= other.x; y /= other.y; z /= other.z; return *this; }
-    Vec3& operator+=(const Vec3& other) { x += other.x; y += other.y; z += other.z; return *this; }
-    Vec3& operator-=(const Vec3& other) { x -= other.x; y -= other.y; z -= other.z; return *this; }
-    Vec3 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar }; }
-    Vec3 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar }; }
+    vec3 operator*(const vec3& other) const { return { x * other.x, y * other.y, z * other.z }; }
+    vec3 operator/(const vec3& other) const { return { x / other.x, y / other.y, z / other.z }; }
+    vec3 operator+(const vec3& other) const { return { x + other.x, y + other.y, z + other.z }; }
+    vec3 operator-(const vec3& other) const { return { x - other.x, y - other.y, z - other.z }; }
+    vec3& operator*=(const vec3& other) { x *= other.x; y *= other.y; z *= other.z; return *this; }
+    vec3& operator/=(const vec3& other) { x /= other.x; y /= other.y; z /= other.z; return *this; }
+    vec3& operator+=(const vec3& other) { x += other.x; y += other.y; z += other.z; return *this; }
+    vec3& operator-=(const vec3& other) { x -= other.x; y -= other.y; z -= other.z; return *this; }
+    vec3 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar }; }
+    vec3 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar }; }
 
-    static Vec3 up() { return { 0, 1, 0 }; }
-    static Vec3 down() { return { 0, -1, 0 }; }
-    static Vec3 left() { return { -1, 0, 0 }; }
-    static Vec3 right() { return { 1, 0, 0 }; }
-    static Vec3 forward() { return { 0, 0, -1 }; }
-    static Vec3 back() { return { 0, 0, 1 }; }
+    static vec3 up() { return { 0, 1, 0 }; }
+    static vec3 down() { return { 0, -1, 0 }; }
+    static vec3 left() { return { -1, 0, 0 }; }
+    static vec3 right() { return { 1, 0, 0 }; }
+    static vec3 forward() { return { 0, 0, -1 }; }
+    static vec3 back() { return { 0, 0, 1 }; }
 
-    [[nodiscard]] Vec3 min() const { return { std::fmin(x, y), std::fmin(y, z), std::fmin(z, x) }; }
+    [[nodiscard]] vec3 min() const { return { std::fmin(x, y), std::fmin(y, z), std::fmin(z, x) }; }
 
-    [[nodiscard]] Vec3 max() const { return { std::fmax(x, y), std::fmax(y, z), std::fmax(z, x) }; }
+    [[nodiscard]] vec3 max() const { return { std::fmax(x, y), std::fmax(y, z), std::fmax(z, x) }; }
 
-    [[nodiscard]] Vec3 min(const Vec3& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y), std::fmin(z, other.z) }; }
+    [[nodiscard]] vec3 min(const vec3& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y), std::fmin(z, other.z) }; }
 
-    [[nodiscard]] Vec3 max(const Vec3& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y), std::fmax(z, other.z) }; }
+    [[nodiscard]] vec3 max(const vec3& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y), std::fmax(z, other.z) }; }
 
-    [[nodiscard]] Vec3 clamp(const Vec3& minVal, const Vec3& maxVal) const {
+    [[nodiscard]] vec3 clamp(const vec3& minVal, const vec3& maxVal) const {
         return { fmax(minVal.x, fmin(x, maxVal.x)), fmax(minVal.y, fmin(y, maxVal.y)), fmax(minVal.z, fmin(z, maxVal.z)) };
     }
 
-    [[nodiscard]] float dot(const Vec3& other) const { return x * other.x + y * other.y + z * other.z; }
+    [[nodiscard]] float dot(const vec3& other) const { return x * other.x + y * other.y + z * other.z; }
 
-    [[nodiscard]] Vec3 cross(const Vec3& other) const { return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x }; }
+    [[nodiscard]] vec3 cross(const vec3& other) const { return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x }; }
 
     [[nodiscard]] float length() const { return std::sqrt(x * x + y * y + z * z); }
 
-    [[nodiscard]] float distance(const Vec3& other) const { return (*this-other).length(); }
+    [[nodiscard]] float distance(const vec3& other) const { return (*this-other).length(); }
 
-    [[nodiscard]] Vec3 normalize() const {
+    [[nodiscard]] vec3 normalize() const {
         const float len = length();
-        return len != 0 ? (*this) / len : Vec3();
+        return len != 0 ? (*this) / len : vec3();
     }
 
-    [[nodiscard]] float angle(const Vec3& other) const {
+    [[nodiscard]] float angle(const vec3& other) const {
         const float dotProduct = dot(other);
         const float lengths = length() * other.length();
         return lengths > 0 ? std::acos(dotProduct / lengths) * (180.0f / PI) : 0;
     }
 
-    [[nodiscard]] Vec3 rotate(const float angle, const Vec3& axis) const {
+    [[nodiscard]] vec3 rotate(const float angle, const vec3& axis) const {
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -139,49 +139,49 @@ struct Vec3 {
     }
 };
 
-inline Vec3 operator*(const float scalar, const Vec3& vec) { return vec * scalar; }
+inline vec3 operator*(const float scalar, const vec3& vec) { return vec * scalar; }
 
-struct Vec4 {
+struct vec4 {
     float x, y, z, w;
 
-    Vec4() : x(0), y(0), z(0), w(0) {}
-    explicit Vec4(const float value) : x(value), y(value), z(value), w(value) {}
-    explicit Vec4(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)), z(static_cast<float>(value)), w(static_cast<float>(value)) {}
-    Vec4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
-    Vec4(const int x, const int y, const int z, const int w) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)), w(static_cast<float>(w)) {}
-    Vec4(const Vec3& vec, const float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
+    vec4() : x(0), y(0), z(0), w(0) {}
+    explicit vec4(const float value) : x(value), y(value), z(value), w(value) {}
+    explicit vec4(const int value) : x(static_cast<float>(value)), y(static_cast<float>(value)), z(static_cast<float>(value)), w(static_cast<float>(value)) {}
+    vec4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
+    vec4(const int x, const int y, const int z, const int w) : x(static_cast<float>(x)), y(static_cast<float>(y)), z(static_cast<float>(z)), w(static_cast<float>(w)) {}
+    vec4(const vec3& vec, const float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
 
-    Vec4 operator*(const Vec4& other) const { return { x * other.x, y * other.y, z * other.z, w * other.w }; }
-    Vec4 operator/(const Vec4& other) const { return { x / other.x, y / other.y, z / other.z, w / other.w }; }
-    Vec4 operator+(const Vec4& other) const { return { x + other.x, y + other.y, z + other.z, w + other.w }; }
-    Vec4 operator-(const Vec4& other) const { return { x - other.x, y - other.y, z - other.z, w - other.w }; }
-    Vec4& operator*=(const Vec4& other) { x *= other.x; y *= other.y; z *= other.z; w *= other.w; return *this; }
-    Vec4& operator/=(const Vec4& other) { x /= other.x; y /= other.y; z /= other.z; w /= other.w; return *this; }
-    Vec4& operator+=(const Vec4& other) { x += other.x; y += other.y; z += other.z; w += other.w; return *this; }
-    Vec4& operator-=(const Vec4& other) { x -= other.x; y -= other.y; z -= other.z; w -= other.w; return *this; }
-    Vec4 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar, w * scalar }; }
-    Vec4 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar, w / scalar }; }
+    vec4 operator*(const vec4& other) const { return { x * other.x, y * other.y, z * other.z, w * other.w }; }
+    vec4 operator/(const vec4& other) const { return { x / other.x, y / other.y, z / other.z, w / other.w }; }
+    vec4 operator+(const vec4& other) const { return { x + other.x, y + other.y, z + other.z, w + other.w }; }
+    vec4 operator-(const vec4& other) const { return { x - other.x, y - other.y, z - other.z, w - other.w }; }
+    vec4& operator*=(const vec4& other) { x *= other.x; y *= other.y; z *= other.z; w *= other.w; return *this; }
+    vec4& operator/=(const vec4& other) { x /= other.x; y /= other.y; z /= other.z; w /= other.w; return *this; }
+    vec4& operator+=(const vec4& other) { x += other.x; y += other.y; z += other.z; w += other.w; return *this; }
+    vec4& operator-=(const vec4& other) { x -= other.x; y -= other.y; z -= other.z; w -= other.w; return *this; }
+    vec4 operator*(const float scalar) const { return { x * scalar, y * scalar, z * scalar, w * scalar }; }
+    vec4 operator/(const float scalar) const { return { x / scalar, y / scalar, z / scalar, w / scalar }; }
 
-    [[nodiscard]] Vec4 min(const Vec4& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y), std::fmin(z, other.z), std::fmin(w, other.w) }; }
+    [[nodiscard]] vec4 min(const vec4& other) const { return { std::fmin(x, other.x), std::fmin(y, other.y), std::fmin(z, other.z), std::fmin(w, other.w) }; }
 
-    [[nodiscard]] Vec4 max(const Vec4& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y), std::fmax(z, other.z), std::fmax(w, other.w) }; }
+    [[nodiscard]] vec4 max(const vec4& other) const { return { std::fmax(x, other.x), std::fmax(y, other.y), std::fmax(z, other.z), std::fmax(w, other.w) }; }
 
-    [[nodiscard]] Vec4 clamp(const Vec4& minVal, const Vec4& maxVal) const {
+    [[nodiscard]] vec4 clamp(const vec4& minVal, const vec4& maxVal) const {
         return { fmax(minVal.x, fmin(x, maxVal.x)), fmax(minVal.y, fmin(y, maxVal.y)), fmax(minVal.z, fmin(z, maxVal.z)), fmax(minVal.w, fmin(w, maxVal.w)) };
     }
 
-    [[nodiscard]] float dot(const Vec4& other) const { return x * other.x + y * other.y + z * other.z + w * other.w; }
+    [[nodiscard]] float dot(const vec4& other) const { return x * other.x + y * other.y + z * other.z + w * other.w; }
 
     [[nodiscard]] float length() const { return std::sqrt(x * x + y * y + z * z + w * w); }
 
-    [[nodiscard]] float distance(const Vec4& other) const { return (*this-other).length(); }
+    [[nodiscard]] float distance(const vec4& other) const { return (*this-other).length(); }
 
-    [[nodiscard]] Vec4 normalize() const {
+    [[nodiscard]] vec4 normalize() const {
         const float len = length();
-        return len != 0 ? *this / len : Vec4();
+        return len != 0 ? *this / len : vec4();
     }
 
-    [[nodiscard]] Vec3 toRGB() const { return { x, y, z }; }
+    [[nodiscard]] vec3 toRGB() const { return { x, y, z }; }
 
     [[nodiscard]] float alpha() const { return w; }
 
@@ -192,40 +192,40 @@ struct Vec4 {
     }
 };
 
-inline Vec4 operator*(const float scalar, const Vec4& vec) { return vec * scalar; }
+inline vec4 operator*(const float scalar, const vec4& vec) { return vec * scalar; }
 
-struct Mat4 {
+struct mat4 {
     float m[4][4]{};
 
-    Mat4(){
+    mat4(){
         m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
         m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
         m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
         m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
     }
 
-    static Mat4 identity(){
+    static mat4 identity(){
         return {};
     }
 
-    static Mat4 translation(const Vec3& pos){
-        Mat4 result;
+    static mat4 translation(const vec3& pos){
+        mat4 result;
         result.m[0][3] = pos.x;
         result.m[1][3] = pos.y;
         result.m[2][3] = pos.z;
         return result;
     }
 
-    static Mat4 scale(const Vec3& size){
-        Mat4 result;
+    static mat4 scale(const vec3& size){
+        mat4 result;
         result.m[0][0] = size.x;
         result.m[1][1] = size.y;
         result.m[2][2] = size.z;
         return result;
     }
 
-    static Mat4 rotationX(const float angle){
-        Mat4 result;
+    static mat4 rotationX(const float angle){
+        mat4 result;
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -238,8 +238,8 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 rotationY(const float angle){
-        Mat4 result;
+    static mat4 rotationY(const float angle){
+        mat4 result;
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -252,8 +252,8 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 rotationZ(const float angle){
-        Mat4 result;
+    static mat4 rotationZ(const float angle){
+        mat4 result;
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -266,8 +266,8 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 rotation(float angle, const Vec3& axis){
-        Mat4 result;
+    static mat4 rotation(float angle, const vec3& axis){
+        mat4 result;
         const float rad = angle * (PI / 180.0f);
         const float cosA = std::cos(rad);
         const float sinA = std::sin(rad);
@@ -296,11 +296,11 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 perspective(const float fovDeg, const float aspect, const float nearPlane, const float farPlane) {
+    static mat4 perspective(const float fovDeg, const float aspect, const float nearPlane, const float farPlane) {
         const float fovRad = fovDeg * (PI / 180.0f);
         const float f = 1.0f / std::tan(fovRad / 2.0f);
         const float zRange = nearPlane - farPlane;
-        Mat4 result;
+        mat4 result;
         result.m[0][0] = f / aspect;
         result.m[1][1] = f;
         result.m[2][2] = (nearPlane + farPlane) / zRange;
@@ -309,12 +309,12 @@ struct Mat4 {
         return result;
     }
 
-    static Mat4 lookAt(const Vec3& targetPos, const Vec3& cameraPos) {
-        const Vec3 f = (cameraPos - targetPos).normalize(); // forward vector - view direction of the camera
-        const Vec3 s = f.cross(Vec3::up()).normalize(); // right vector - perpendicular to the forward vector and world up vector
-        const Vec3 u = s.cross(f).normalize(); // camera up vector - perpendicular to the forward and right vectors
+    static mat4 lookAt(const vec3& targetPos, const vec3& cameraPos) {
+        const vec3 f = (cameraPos - targetPos).normalize(); // forward vector - view direction of the camera
+        const vec3 s = f.cross(vec3::up()).normalize(); // right vector - perpendicular to the forward vector and world up vector
+        const vec3 u = s.cross(f).normalize(); // camera up vector - perpendicular to the forward and right vectors
 
-        Mat4 result;
+        mat4 result;
         result.m[0][0] = s.x; result.m[0][1] = u.x; result.m[0][2] = -f.x;
         result.m[1][0] = s.y; result.m[1][1] = u.y; result.m[1][2] = -f.y;
         result.m[2][0] = s.z; result.m[2][1] = u.z; result.m[2][2] = -f.z;
@@ -322,8 +322,8 @@ struct Mat4 {
         return result;
     }
 
-    Mat4 operator*(const Mat4& other) const {
-        Mat4 result;
+    mat4 operator*(const mat4& other) const {
+        mat4 result;
         result.m[0][0] = m[0][0] * other.m[0][0] + m[0][1] * other.m[1][0] + m[0][2] * other.m[2][0] + m[0][3] * other.m[3][0];
         result.m[0][1] = m[0][0] * other.m[0][1] + m[0][1] * other.m[1][1] + m[0][2] * other.m[2][1] + m[0][3] * other.m[3][1];
         result.m[0][2] = m[0][0] * other.m[0][2] + m[0][1] * other.m[1][2] + m[0][2] * other.m[2][2] + m[0][3] * other.m[3][2];
